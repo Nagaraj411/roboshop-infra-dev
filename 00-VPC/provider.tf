@@ -7,8 +7,8 @@ terraform {
   }
 
   backend "s3" {
-    bucket       = "devops-84s" # This should match the bucket in your tfvars files
-    key          = "roboshop-infra-dev"
+    bucket       = "roboshop-infra-dev1" # This should match the bucket in your tfvars files
+    key          = "roboshop-dev"
     region       = "us-east-1"
     encrypt      = true
     use_lockfile = true
