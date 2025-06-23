@@ -1,5 +1,5 @@
 module "frontend"{
-    source = "../../terraform-aws-SG"
+    source = "../../terraform-aws-security group"
     project = var.project
     environment = var.environment
     sg_name = var.frontend_sg_name
