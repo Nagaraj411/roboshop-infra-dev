@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "git::https://github.com/Nagaraj411/roboshop-infra-dev.git?ref=main"
+  source = "git::https://github.com/Nagaraj411/vpc-module-test.git?ref=main"
   project               = var.project
   environment           = var.environment
   public_subnet_cidrs   = var.public_subnet_cidrs
