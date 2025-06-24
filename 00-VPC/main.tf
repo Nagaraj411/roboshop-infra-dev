@@ -1,6 +1,6 @@
 module "vpc" {
-  source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"  
-  # must match with module source with terraform-aws-security-group
+  source = "git::https://github.com/Nagaraj411/terraform-aws-vpc.git?ref=main"  
+  # must match with module source with terraform-aws-vpc
   project               = var.project
   environment           = var.environment
   public_subnet_cidrs   = var.public_subnet_cidrs
