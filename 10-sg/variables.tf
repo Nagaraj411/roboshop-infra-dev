@@ -13,3 +13,11 @@ variable "frontend_sg_name" {
 variable "frontend_sg_description" {
   default = "Security group for frontend services"
 }
+
+variable "bastion_sg_name" {
+  default = "bastion"
+}
+
+variable "bastion_sg_description" {
+  default = "Security group for bastion host"
+}
