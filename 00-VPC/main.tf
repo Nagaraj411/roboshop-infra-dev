@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "git::https://github.com/Nagaraj411/terraform-aws-vpc.git?ref=main"
+  source = "git::https://github.com/Nagaraj411/terraform-aws-vpc.git?ref=main" # this is parent module source
   # must match with module source with terraform-aws-vpc
   project               = var.project
   environment           = var.environment
