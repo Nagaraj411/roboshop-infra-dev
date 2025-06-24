@@ -13,8 +13,3 @@ variable "frontend_sg_name" {
 variable "frontend_sg_description" {
   default = "Security group for frontend services"
 }
-
-variable "vpc_id" {
-  type = string
-  default = {}
-}
