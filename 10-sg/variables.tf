@@ -19,5 +19,5 @@ variable "bastion_sg_name" {
 }
 
 variable "bastion_sg_description" {
-  default = "Security group for bastion host"
+  default = "Created Security group for bastion instance"
 }
