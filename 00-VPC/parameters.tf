@@ -10,7 +10,15 @@ resource "aws_ssm_parameter" "vpc_id" {
 resource "aws_ssm_parameter" "public_subnet_ids" {
     name        = "/${var.project}/${var.environment}/public_subnet_ids"
     type        = "StringList"
-    value       = join(",", module.vpc.public_subnet_ids)
+    value       = join(",", module.vpc.│ Error: Unsupported attribute
+│
+│   on parameters.tf line 13, in resource "aws_ssm_parameter" "public_subnet_ids":
+│   13:     value       = join(",", module.vpc.public_subnet_ids)
+│     ├────────────────
+│     │ module.vpc is a object
+│
+│ This object does not have an attribute named "public_subnet_ids".
+)
 }
 
 # resource "aws_ssm_parameter" "private_subnet_ids" {
