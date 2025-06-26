@@ -13,4 +13,11 @@ resource "aws_ssm_parameter" "bastion_sg_id" {
     type        = "String"
     value       = module.bastion.sg_id
 }
- 
+# when we write bastion resource in 10-sg module parameter.tf, next we write in 20-bastion/data.tf
+
+resource "aws_ssm_parameter" "backend_alb_sg_id" {
+    name = "/${var.project}/${var.environment}/backend_alb_sg_id"
+    type = "String"
+    value = module.backend_alb.sg_id
+}
+# when we write backend_alb resource in 10-sg module parameter.tf, next we write in 50-backend-ALB/data.tf

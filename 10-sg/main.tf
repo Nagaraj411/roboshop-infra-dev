@@ -16,7 +16,18 @@ module "bastion"{
 
     sg_name = var.bastion_sg_name
     sg_description = var.bastion_sg_description
-    vpc_id = local.vpc_id # if u want to create local variable, you can use local.vpc_id
+    vpc_id = local.vpc_id
+}
+
+module "backend_alb"{ # This module is used to create a security group for the backend ALB
+    source = "../../terraform-aws-security group" # Use the child path to the module
+    #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
+    project = var.project
+    environment = var.environment
+
+    sg_name = "backend-alb"
+    sg_description = "for backend alb"
+    vpc_id = local.vpc_id
 }
 
 # Store the security group ID in SSM Parameter Store for frontend instances security group
@@ -28,5 +39,14 @@ resource "aws_security_group_rule" "bastion_ingress" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = module.bastion.sg_id
 }
+#===================================================================================================================
 
-#====================================================================================================================
+# backend ALB accepting connections from my bastion host security group on port 80
+resource "aws_security_group_rule" "backend_alb_ingress" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  source_security_group_id = module.bastion.sg_id # This allows the backend ALB to accept connections from the bastion host security group
+  security_group_id = module.backend_alb.sg_id
+}
