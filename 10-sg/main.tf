@@ -1,6 +1,6 @@
 module "frontend"{
-    #source = "../../terraform-aws-security group" # Use the child path to the module
-    source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
+    source = "../../terraform-aws-security group" # Use the child path to the module
+    #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
     project = var.project
     environment = var.environment
     sg_name = var.frontend_sg_name
@@ -9,8 +9,8 @@ module "frontend"{
 }
 
 module "bastion"{
-    #source = "../../terraform-aws-security group" # Use the child path to the module
-    source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
+    source = "../../terraform-aws-security group" # Use the child path to the module
+    #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
     project = var.project
     environment = var.environment
 
