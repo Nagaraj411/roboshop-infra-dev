@@ -1,4 +1,4 @@
-# 📘 SSM Parameters Used
+## 📘 SSM Parameters Used
 * VPC ID: Retrieved from SSM for environment-specific VPC configuration.
 
 * Private Subnet IDs: Fetched from SSM to place resources in private subnets.
