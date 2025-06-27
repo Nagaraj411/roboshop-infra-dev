@@ -21,3 +21,8 @@ variable "bastion_sg_name" {
 variable "bastion_sg_description" {
   default = "Created Security group for bastion instance"
 }
+
+variable "vpc_ingress" {
+  type    = list(number)
+  default = [22, 443, 943, 1194]
+}
