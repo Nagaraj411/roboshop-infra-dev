@@ -26,3 +26,8 @@ variable "vpc_ingress" {
   type    = list(number)
   default = [22, 443, 943, 1194]
 }
+
+variable "mongodb_ports_vpn" {
+  default = [22, 27017]
+  
+}

@@ -28,3 +28,9 @@ resource "aws_ssm_parameter" "vpn_sg_id" {
     value = module.vpn.sg_id
 }
 # when we wrote vpn SG ids in 10-sg module main.tf & now we expose the vpn security group ID in 10-sg module parameter.tf
+
+resource "aws_ssm_parameter" "mongodb_sg_id" {
+    name = "/${var.project}/${var.environment}/mongodb_sg_id"
+    type = "String"
+    value = module.mongodb.sg_id
+}
