@@ -15,15 +15,15 @@
 
 # 🧱 Components & Flow
 
- * 🖥️ Local Machine
+# 🖥️ Local Machine
    └──> 🔑 openvpn.pub (SSH Public Key)
              │
            ▼
- * ☁️ AWS
+ # ☁️ AWS
    └──> 📦 aws_key_pair "openvpn"
              │
              ▼
- * 🖥️ EC2 Instance (VPN Server)
+ # 🖥️ EC2 Instance (VPN Server)
    ├──> 🌐 Public Subnet
    ├──> 🛡️ Security Group (VPN Ports)
    ├──> 🔑 Key Pair (SSH Login Access)
