@@ -2,6 +2,7 @@
 In this setup, we use Terraform to provision EC2 instances on AWS for each database/service: MongoDB, Redis, MySQL, and RabbitMQ. Each instance is configured using a bootstrap.sh script passed via SSH.
 
 ## 🧱 Architecture Components
+
     🖥️ EC2 Instance – One per service
 
     🛡️ Security Group – Allows specific port access
@@ -11,6 +12,7 @@ In this setup, we use Terraform to provision EC2 instances on AWS for each datab
     🌐 Subnet (Database) – All instances are launched in private subnets
 
     ⚙️ bootstrap.sh – Common provisioning script
+
     🔐 IAM Role – Used by MySQL to fetch secrets
 
 🏷️ Tags – For naming & identification
