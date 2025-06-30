@@ -15,23 +15,23 @@
 
 ## 🧱 VPN Setup Workflow (Terraform)
 
-🖥️ Local Machine
-   └──> 🔑 Generate SSH Key Pair
+### 🖥️ Local Machine
+        └──> 🔑 Generate SSH Key Pair
+                    │
+                    ▼
+### 📂 openvpn.pub (Public Key File)
              │
              ▼
-📂 openvpn.pub (Public Key File)
-             │
-             ▼
-⛏️ Terraform
-   └──> 📦 Import Key Pair to AWS (aws_key_pair)
-             │
-             ▼
-   └──> 🖥️ Launch EC2 Instance
-         ├── Uses Key Pair 🔑 (for SSH)
-         ├── Uses 📄 openvpn.sh (User Data)
-         ├── In 🌐 Public Subnet
-         └── With 🛡️ Security Group (VPN Ports Open)
-             │
-             ▼
-⚙️ openvpn.sh executes on instance
-   └──> Installs & configures OpenVPN
+### ⛏️ Terraform
+        └──> 📦 Import Key Pair to AWS (aws_key_pair)
+                    │
+                    ▼
+        └──> 🖥️ Launch EC2 Instance
+                ├── Uses Key Pair 🔑 (for SSH)
+                ├── Uses 📄 openvpn.sh (User Data)
+                ├── In 🌐 Public Subnet
+                └── With 🛡️ Security Group (VPN Ports Open)
+                    │
+                    ▼
+### ⚙️ openvpn.sh executes on instance
+        └──> Installs & configures OpenVPN
