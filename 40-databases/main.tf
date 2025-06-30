@@ -15,11 +15,11 @@ resource "aws_instance" "mongodb" {
 }
 
 resource "terraform_data" "mongodb" { # This resource is used to manage the MongoDB instance
-  triggers_replace = [ 
+  triggers_replace = [
     aws_instance.mongodb.id # This is used to trigger the resource to be replaced when the MongoDB instance is updated 
   ]
   provisioner "file" {
-    source      = "bootstrap.sh" 
+    source      = "bootstrap.sh"
     destination = "/tmp/bootstrap.sh"
   }
   connection {
@@ -53,11 +53,11 @@ resource "aws_instance" "redis" {
 }
 
 resource "terraform_data" "redis" { # This resource is used to manage the Redis instance
-  triggers_replace = [ 
+  triggers_replace = [
     aws_instance.redis.id # This is used to trigger the resource to be replaced when the Redis instance is updated 
   ]
   provisioner "file" {
-    source      = "bootstrap.sh" 
+    source      = "bootstrap.sh"
     destination = "/tmp/bootstrap.sh"
   }
   connection {
@@ -81,7 +81,7 @@ resource "aws_instance" "mysql" {
   instance_type          = "t3.micro"
   vpc_security_group_ids = [local.mysql_sg_id]
   subnet_id              = local.database_subnet_ids
-  iam_instance_profile    = "EC2RoleToFetchSMM" # This is used to attach the IAM role to the instance for fetching secrets from AWS Secrets Manager
+  iam_instance_profile   = "EC2RoleToFetchSMM" # This is used to attach the IAM role to the instance for fetching secrets from AWS Secrets Manager
 
   tags = merge(
     local.common_tags,
@@ -92,11 +92,11 @@ resource "aws_instance" "mysql" {
 }
 
 resource "terraform_data" "mysql" { # This resource is used to manage the mysql instance
-  triggers_replace = [ 
+  triggers_replace = [
     aws_instance.mysql.id # This is used to trigger the resource to be replaced when the mysql instance is updated 
   ]
   provisioner "file" {
-    source      = "bootstrap.sh" 
+    source      = "bootstrap.sh"
     destination = "/tmp/bootstrap.sh"
   }
   connection {
@@ -130,11 +130,11 @@ resource "aws_instance" "rabbitmq" {
 }
 
 resource "terraform_data" "rabbitmq" { # This resource is used to manage the rabbitmq instance
-  triggers_replace = [ 
+  triggers_replace = [
     aws_instance.rabbitmq.id # This is used to trigger the resource to be replaced when the rabbitmq instance is updated 
   ]
   provisioner "file" {
-    source      = "bootstrap.sh" 
+    source      = "bootstrap.sh"
     destination = "/tmp/bootstrap.sh"
   }
   connection {

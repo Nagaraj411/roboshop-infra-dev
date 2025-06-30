@@ -2,7 +2,7 @@
 data "aws_ami" "joindevops" {
   most_recent = true
   owners      = ["973714476881"]
-  
+
   filter {
     name   = "name"
     values = ["RHEL-9-DevOps-Practice"]
@@ -19,7 +19,7 @@ data "aws_ami" "joindevops" {
   }
 }
 
-data "aws_ssm_parameter" "bastion_sg_id" {  # This SSM parameter stores the security group ID parameter.tf for the bastion host
+data "aws_ssm_parameter" "bastion_sg_id" { # This SSM parameter stores the security group ID parameter.tf for the bastion host
   name = "/${var.project}/${var.environment}/bastion_sg_id"
 }
 

@@ -1,7 +1,7 @@
 # This Data-sources can create the dynamic changes in AMI to create EC2 Instance
 data "aws_ami" "openvpn" {
-  owners           = ["679593333241"]
-  most_recent      = true
+  owners      = ["679593333241"]
+  most_recent = true
 
   filter {
     name   = "name"
