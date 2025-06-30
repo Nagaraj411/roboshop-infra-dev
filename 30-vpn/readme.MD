@@ -13,7 +13,7 @@
 🏷️ Tags – Add project/environment labels for easy identification.
 
 
-# 🧱 VPN Setup Workflow (Terraform)
+## 🧱 VPN Setup Workflow (Terraform)
 
 🖥️ Local Machine
    └──> 🔑 Generate SSH Key Pair
