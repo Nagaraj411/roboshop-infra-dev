@@ -13,19 +13,25 @@
 🏷️ Tags – Add project/environment labels for easy identification.
 
 
-# 🧱 Components & Flow
+# 🧱 VPN Setup Workflow (Terraform)
 
-# 🖥️ Local Machine
-   └──> 🔑 openvpn.pub (SSH Public Key)
-             │
-           ▼
- # ☁️ AWS
-   └──> 📦 aws_key_pair "openvpn"
+🖥️ Local Machine
+   └──> 🔑 Generate SSH Key Pair
              │
              ▼
- # 🖥️ EC2 Instance (VPN Server)
-   ├──> 🌐 Public Subnet
-   ├──> 🛡️ Security Group (VPN Ports)
-   ├──> 🔑 Key Pair (SSH Login Access)
-   ├──> 📄 openvpn.sh (User Data Script for VPN Setup)
-   └──> 🏷️ Tags (Project & Environment Info)
+📂 openvpn.pub (Public Key File)
+             │
+             ▼
+⛏️ Terraform
+   └──> 📦 Import Key Pair to AWS (aws_key_pair)
+             │
+             ▼
+   └──> 🖥️ Launch EC2 Instance
+         ├── Uses Key Pair 🔑 (for SSH)
+         ├── Uses 📄 openvpn.sh (User Data)
+         ├── In 🌐 Public Subnet
+         └── With 🛡️ Security Group (VPN Ports Open)
+             │
+             ▼
+⚙️ openvpn.sh executes on instance
+   └──> Installs & configures OpenVPN
