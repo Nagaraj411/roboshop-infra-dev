@@ -33,3 +33,19 @@ resource "aws_lb_listener" "backend_alb" {
     }
   }
 }
+
+
+# This module creates a Global Accelerator to route traffic to the backend ALB.
+# if catalogue service traffic got to backend ALB it goes to catalogue service
+# if cart service traffic got to backend ALB it goes to cart service
+resource "aws_route53_record" "backend_alb" {
+  zone_id = var.zone_id
+  name    = "*.backend-dev.${var.zone_name}" 
+  type    = "A"
+
+  alias {
+    name                   = module.backend_alb.dns_name # The DNS name of the ALB
+    zone_id                = module.backend_alb.zone_id # The zone ID of the ALB
+    evaluate_target_health = true # Evaluate the health of the target
+  }
+}

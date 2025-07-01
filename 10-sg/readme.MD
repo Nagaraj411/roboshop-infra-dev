@@ -15,3 +15,12 @@ copy git link  paste in 10-sg folder as a source
 
 
 
+# 🔐 Catalogue SG Rules (Simplified)
+
+      📜 Backend_ALB  ---> catalogue : 8080   # App traffic
+      📜 VPN          ---> catalogue : 8080   # Internal access
+
+      📜 Bastion      ---> catalogue : 22     # SSH access
+      📜 VPN          ---> catalogue : 22     # SSH access
+
+      📜 catalogue    ---> MongoDB   : 27017  # DB connection

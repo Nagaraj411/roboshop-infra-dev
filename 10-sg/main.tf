@@ -88,6 +88,19 @@ module "rabbitmq" {                             # This module is used to create 
   vpc_id         = local.vpc_id
 }
 
+# catalogue security group
+module "catalogue" {                             # This module is used to create a security group for the catalogue
+  source = "../../terraform-aws-security group" # Use the child path to the module
+  #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
+  project     = var.project
+  environment = var.environment
+
+  sg_name        = "catalogue"
+  sg_description = "catalogue security group"
+  vpc_id         = local.vpc_id
+}
+#===================================================================================================================
+
 # Store the security group ID in SSM Parameter Store for frontend instances security group
 resource "aws_security_group_rule" "bastion_ingress" {
   type              = "ingress"
@@ -172,4 +185,51 @@ resource "aws_security_group_rule" "rabbitmq_vpn_ssh" {
   protocol                 = "tcp"
   source_security_group_id = module.vpn.sg_id # This allows the backend ALB to accept connections from the VPN security group
   security_group_id        = module.rabbitmq.sg_id
+}
+
+
+# catalogue_backend_alb ports 8080
+resource "aws_security_group_rule" "catalogue_backend_alb" {
+  type                     = "ingress"
+  from_port                = 8080
+  to_port                  = 8080
+  protocol                 = "tcp"
+  source_security_group_id = module.backend_alb.sg_id # This allows the backend ALB to accept connections from the catalogue security group
+  security_group_id        = module.catalogue.sg_id
+}
+
+resource "aws_security_group_rule" "catalogue_vpn_ssh" {
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "tcp"
+  source_security_group_id = module.vpn.sg_id # This allows the backend ALB to accept connections from the catalogue security group
+  security_group_id        = module.catalogue.sg_id
+}
+
+resource "aws_security_group_rule" "catalogue_vpn_http" {
+  type                     = "ingress"
+  from_port                = 8080
+  to_port                  = 8080
+  protocol                 = "tcp"
+  source_security_group_id = module.vpn.sg_id # This allows the backend ALB to accept connections from the catalogue security group
+  security_group_id        = module.catalogue.sg_id
+}
+
+resource "aws_security_group_rule" "catalogue_bastion" {
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # This allows the backend ALB to accept connections from the catalogue security group
+  security_group_id        = module.catalogue.sg_id
+}
+
+resource "aws_security_group_rule" "mongodb_catalogue" {
+  type                     = "ingress"
+  from_port                = 27017
+  to_port                  = 27017
+  protocol                 = "tcp"
+  source_security_group_id = module.catalogue.sg_id # This allows the backend ALB to accept connections from the catalogue security group
+  security_group_id        = module.mongodb.sg_id
 }
