@@ -31,7 +31,7 @@ resource "terraform_data" "mongodb" { # This resource is used to manage the Mong
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/bootstrap.sh", # r--- read rwx---
-      "sudo sh /tmp/bootstrap.sh mongodb" # mongodb represent as($1) is the argument passed to the script
+      "sudo sh /tmp/bootstrap.sh mongodb ${var.environment}" # mongodb represent as($1) is the argument passed to the script
     ]
   }
 }
@@ -69,7 +69,7 @@ resource "terraform_data" "mongodb" { # This resource is used to manage the Mong
 #   provisioner "remote-exec" {
 #     inline = [
 #       "chmod +x /tmp/bootstrap.sh",
-#       "sudo sh /tmp/bootstrap.sh redis" # redis represent as($1) is the argument passed to the script
+#       "sudo sh /tmp/bootstrap.sh redis ${var.environment}" # redis represent as($1) is the argument passed to the script
 #     ]
 #   }
 # }
@@ -108,7 +108,7 @@ resource "terraform_data" "mongodb" { # This resource is used to manage the Mong
 #   provisioner "remote-exec" {
 #     inline = [
 #       "chmod +x /tmp/bootstrap.sh",
-#       "sudo sh /tmp/bootstrap.sh mysql" # mysql represent as($1) is the argument passed to the script
+#       "sudo sh /tmp/bootstrap.sh mysql ${var.environment}" # mysql represent as($1) is the argument passed to the script
 #     ]
 #   }
 # }
@@ -146,7 +146,7 @@ resource "terraform_data" "mongodb" { # This resource is used to manage the Mong
 #   provisioner "remote-exec" {
 #     inline = [
 #       "chmod +x /tmp/bootstrap.sh",
-#       "sudo sh /tmp/bootstrap.sh rabbitmq" # rabbitmq represent as($1) is the argument passed to the script
+#       "sudo sh /tmp/bootstrap.sh rabbitmq ${var.environment}" # rabbitmq represent as($1) is the argument passed to the script
 #     ]
 #   }
 # }
@@ -154,19 +154,20 @@ resource "terraform_data" "mongodb" { # This resource is used to manage the Mong
 # Creating route 53 Record for mongodb
 resource "aws_route53_record" "mongodb" {
   zone_id = var.zone_id
-  name = "mongodb-${var.zone_name}"
-  type = "A"
-  ttl = 1
+  name    = "mongodb-${var.environment}.${var.zone_name}" #mongodb-dev.daws84s.site
+  type    = "A"
+  ttl     = 1
   records = [aws_instance.mongodb.private_ip]
   allow_overwrite = true
 }
 
+
 # # Creating route 53 Record for redis
 # resource "aws_route53_record" "redis" {
 #   zone_id = var.zone_id
-#   name = "redis-${var.zone_name}"
-#   type = "A"
-#   ttl = 1
+#   name    = "redis-${var.environment}.${var.zone_name}" #redis-dev.daws84s.site
+#   type    = "A"
+#   ttl     = 1
 #   records = [aws_instance.redis.private_ip]
 #   allow_overwrite = true
 # }
@@ -174,9 +175,9 @@ resource "aws_route53_record" "mongodb" {
 # # Creating route 53 Record for mysql
 # resource "aws_route53_record" "mysql" {
 #   zone_id = var.zone_id
-#   name = "mysql-${var.zone_name}"
-#   type = "A"
-#   ttl = 1
+#   name    = "mysql-${var.environment}.${var.zone_name}" #mysql-dev.daws84s.site
+#   type    = "A"
+#   ttl     = 1
 #   records = [aws_instance.mysql.private_ip]
 #   allow_overwrite = true
 # }
@@ -184,9 +185,9 @@ resource "aws_route53_record" "mongodb" {
 # # Creating route 53 Record for rabbitmq
 # resource "aws_route53_record" "rabbitmq" {
 #   zone_id = var.zone_id
-#   name = "rabbitmq-${var.zone_name}"
-#   type = "A"
-#   ttl = 1
+#   name    = "rabbitmq-${var.environment}.${var.zone_name}" #rabbitmq-dev.daws84s.site
+#   type    = "A"
+#   ttl     = 1
 #   records = [aws_instance.rabbitmq.private_ip]
 #   allow_overwrite = true
 # }

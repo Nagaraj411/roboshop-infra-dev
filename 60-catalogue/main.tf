@@ -8,10 +8,10 @@ resource "aws_lb_target_group" "catalogue" {
     path                = "/health"
     interval            = 5
     timeout             = 2
-    healthy_threshold  = 2
+    healthy_threshold   = 2
     unhealthy_threshold = 2
-    matcher = "200-299"
-    port = 8080
+    matcher             = "200-299"
+    port                = 8080
   }
 }
 
@@ -20,7 +20,7 @@ resource "aws_instance" "catalogue" {
   ami                    = local.ami_id
   instance_type          = "t3.micro"
   vpc_security_group_ids = [local.catalogue_sg_id]
-  subnet_id              = local.private_subnet_ids
+  subnet_id              = local.private_subnet_id
 
   tags = merge(
     local.common_tags,
@@ -52,5 +52,3 @@ resource "terraform_data" "catalogue" { # This resource is used to manage the ca
     ]
   }
 }
-
-
