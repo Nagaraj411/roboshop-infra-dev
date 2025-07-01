@@ -89,7 +89,7 @@ module "mongodb" {                              # This module is used to create 
 # }
 
 # catalogue security group
-module "catalogue" {                             # This module is used to create a security group for the catalogue
+module "catalogue" {                            # This module is used to create a security group for the catalogue
   source = "../../terraform-aws-security group" # Use the child path to the module
   #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
   project     = var.project
