@@ -48,7 +48,45 @@ resource "terraform_data" "catalogue" { # This resource is used to manage the ca
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/catalogue.sh",
-      "sudo sh /tmp/catalogue.sh catalogue" # catalogue represent as($1) is the argument passed to the script
+      "sudo sh /tmp/catalogue.sh catalogue ${var.environment}" # catalogue represent as($1) is the argument passed to the script $ catalogue-dev
     ]
   }
+}
+
+
+###  Deployment process to Autoscaling
+# This script will staop runnign instance & take the AMI ID
+resource "aws_ec2_instance_state" "catalogue" {
+  instance_id = aws_instance.catalogue.id
+  state = "stopped"
+  depends_on = [terraform_data.catalogue] # when line 34-51 execut complete the this command will works
+}
+
+
+# This will takes the AMI id after instance stopped
+resource "aws_ami_from_instance" "catalogue" {  
+  name = "${var.project}-${var.environment}-catalogue"
+  source_instance_id = aws_instance.catalogue.id
+  depends_on = [aws_ec2_instance_state.catalogue]
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.environment}-catalogue"
+    }
+  )
+}
+
+
+# Terraform data delete process for catalogue
+resource "terraform_data" "catalogue_delete" { 
+  triggers_replace = [
+    aws_instance.catalogue.id 
+  ]
+
+  # make sure you have aws configure in your laptop
+  provisioner "local-exec" {
+    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
+  }
+
+  depends_on = [aws_ami_from_instance.catalogue]
 }
