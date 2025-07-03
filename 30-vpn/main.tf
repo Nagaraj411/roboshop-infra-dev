@@ -4,6 +4,8 @@ resource "aws_key_pair" "openvpn" {
   public_key = file("D:\\Devops\\test\\openvpn.pub") # add keypair path link for local computer # must give like this double \\
 }
 
+
+# This will create instance (VPN)
 resource "aws_instance" "vpn" {
   ami                    = local.ami_id
   instance_type          = "t3.micro"
@@ -19,7 +21,7 @@ resource "aws_instance" "vpn" {
   )
 }
 
-# Creating route 53 Record for vpn
+# Creating route 53 Record for vpn Create Records
 resource "aws_route53_record" "vpn" {
   zone_id = var.zone_id
   name    = "vpn-${var.environment}.${var.zone_name}" #vpn-dev.devops84.shop
