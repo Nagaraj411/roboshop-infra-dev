@@ -145,7 +145,6 @@ resource "aws_launch_template" "catalogue" {
 
 resource "aws_autoscaling_group" "catalogue" {
   name                      = "${var.project}-${var.environment}-catalogue"
-  availability_zones        = ["us-east-1a"]
   desired_capacity          = 1
   max_size                  = 10
   min_size                  = 1

@@ -18,7 +18,7 @@ module "backend_alb" {
 }
 
 # listeners are used to define how the ALB will handle incoming traffic only on port 80 will be allowed
-resource "aws_lb_listener" "backend_alb_listener_arn" {
+resource "aws_lb_listener" "backend_alb" { #_listener_arn
   load_balancer_arn = module.backend_alb.arn
   port              = "80"
   protocol          = "HTTP"
