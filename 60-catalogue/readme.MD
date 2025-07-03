@@ -45,3 +45,22 @@
     ✅ Min Healthy Percentage: 50%
 
     ⚡ Trigger: launch_template
+
+### 🔁 Auto Scaling Policy
+
+    📛 Name:         ${var.project}-${var.environment}-catalogue  
+    🔗 ASG:          aws_autoscaling_group.catalogue.name  
+    ⚙️ Type:         TargetTrackingScaling  
+    📊 Metric:       ASGAverageCPUUtilization  
+    🎯 Target:       75% CPU Utilization
+
+### 🌐 ALB Listener Rule
+
+    🔗 Listener ARN: local.backend_alb_listener_arn  
+    🔢 Priority:     10  
+
+    📥 Condition:    
+    🧾 Host:         catalogue.backend-${var.environment}.${var.zone_name}
+
+    📤 Action:       
+    ➡️ Forward to:   aws_lb_target_group.catalogue.arn
