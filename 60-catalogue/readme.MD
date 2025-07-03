@@ -1,6 +1,6 @@
 ## 🔁 Auto Scaling Group: catalogue
 
-# ⚙️ Configuration
+### ⚙️ Configuration
 
     🏷️ Name: ${var.project}-${var.environment}-catalogue
 
@@ -18,19 +18,19 @@
 
     ⏳ Grace Period: 90s
 
-# 🚀 Launch Template
+### 🚀 Launch Template
 
     🆔 ID: aws_launch_template.catalogue.id
 
     🆕 Version: aws_launch_template.catalogue.latest_version
 
-# 🏷️ Tags
+### 🏷️ Tags
 
     🔁 Tags: merge(local.common_tags, { Name = "...-catalogue" })
 
     📌 Propagate at Launch: true
 
-# 🔄 Instance Refresh
+### 🔄 Instance Refresh
 
     🔁 Strategy: Rolling
 
@@ -38,7 +38,7 @@
 
     ⚡ Trigger: launch_template
 
-# 🔄 Instance Refresh
+### 🔄 Instance Refresh
 
     🔁 Strategy: Rolling
 
