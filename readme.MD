@@ -1,4 +1,4 @@
-# 🚀 Terraform Infrastructure Module Orde
+# 🚀 Terraform Infrastructure Module Order
 
     📦 00-VPC             →  🧱 Base network setup (VPC, Subnets, Route Tables)
     🛡️ 10-SG             →  🔐 Security Groups
