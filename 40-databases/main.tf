@@ -30,7 +30,7 @@ resource "terraform_data" "mongodb" { # This resource is used to manage the Mong
   }
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/bootstrap.sh", # r--- read rwx---
+      "chmod +x /tmp/bootstrap.sh",                          # r--- read rwx---
       "sudo sh /tmp/bootstrap.sh mongodb ${var.environment}" # mongodb represent as($1) is the argument passed to the script mongodb-dev
     ]
   }
@@ -153,11 +153,11 @@ resource "terraform_data" "mongodb" { # This resource is used to manage the Mong
 
 # Creating route 53 Record for mongodb
 resource "aws_route53_record" "mongodb" {
-  zone_id = var.zone_id
-  name    = "mongodb-${var.environment}.${var.zone_name}" #mongodb-dev.devops84.shop
-  type    = "A"
-  ttl     = 1
-  records = [aws_instance.mongodb.private_ip]
+  zone_id         = var.zone_id
+  name            = "mongodb-${var.environment}.${var.zone_name}" #mongodb-dev.devops84.shop
+  type            = "A"
+  ttl             = 1
+  records         = [aws_instance.mongodb.private_ip]
   allow_overwrite = true
 }
 

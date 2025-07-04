@@ -23,10 +23,10 @@ resource "aws_instance" "vpn" {
 
 # Creating route 53 Record for vpn Create Records
 resource "aws_route53_record" "vpn" {
-  zone_id = var.zone_id
-  name    = "vpn-${var.environment}.${var.zone_name}" #vpn-dev.devops84.shop
-  type    = "A"
-  ttl     = 1
-  records = [aws_instance.vpn.public_ip]
+  zone_id         = var.zone_id
+  name            = "vpn-${var.environment}.${var.zone_name}" #vpn-dev.devops84.shop
+  type            = "A"
+  ttl             = 1
+  records         = [aws_instance.vpn.public_ip]
   allow_overwrite = true
 }

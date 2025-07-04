@@ -8,6 +8,18 @@ module "frontend" {
   vpc_id         = local.vpc_id # if u want to create local variable, you can use local.vpc_id
 }
 
+# 70-frontend-alb SG details
+module "frontend_alb" {
+  source = "../../terraform-aws-security group" # Use the child path to the module
+  #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
+  project     = var.project
+  environment = var.environment
+
+  sg_name        = "frontend_alb"
+  sg_description = "for frontend_alb"
+  vpc_id         = local.vpc_id
+}
+
 module "bastion" {
   source = "../../terraform-aws-security group" # Use the child path to the module
   #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
@@ -99,9 +111,12 @@ module "catalogue" {                            # This module is used to create 
   sg_description = "catalogue security group"
   vpc_id         = local.vpc_id
 }
-#===================================================================================================================
 
-# Store the security group ID in SSM Parameter Store for frontend instances security group
+#=================================================================================================================================================================
+#=================================================================================================================================================================
+#=================================================================================================================================================================
+
+# Store the security group ID in SSM Parameter Store for bastion instances security group
 resource "aws_security_group_rule" "bastion_ingress" {
   type              = "ingress"
   from_port         = 22 # ssh port ec2 instance
@@ -110,7 +125,6 @@ resource "aws_security_group_rule" "bastion_ingress" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = module.bastion.sg_id
 }
-#===================================================================================================================
 
 # backend ALB accepting connections from my bastion host security group on port 80
 resource "aws_security_group_rule" "backend_alb_ingress" {
@@ -232,4 +246,32 @@ resource "aws_security_group_rule" "mongodb_catalogue" {
   protocol                 = "tcp"
   source_security_group_id = module.catalogue.sg_id # This allows the backend ALB to accept connections from the catalogue security group
   security_group_id        = module.mongodb.sg_id
+}
+
+resource "aws_security_group_rule" "frontend_alb" {
+  type                     = "ingress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  source_security_group_id = module.frontend_alb.sg_id
+  security_group_id        = module.frontend.sg_id
+}
+
+#Frontend ALB
+resource "aws_security_group_rule" "frontend_alb_http" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = module.frontend_alb.sg_id
+}
+
+resource "aws_security_group_rule" "frontend_alb_https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = module.frontend_alb.sg_id
 }
