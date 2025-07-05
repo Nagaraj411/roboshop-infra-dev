@@ -1,14 +1,14 @@
 🔐 Roboshop Security Groups & Ingress Rules
 
 
-
+![alt text](image-1.png)
 
 
 # 🛡️ Ingress Rules per Component
 📚 MongoDB
     Rule Name	Purpose
     mongodb_vpn	Allow 22, 27017 from vpn
-    mongodb_catalogue	Allow 27017 from catalogue![alt text](image.png)
+    mongodb_catalogue	Allow 27017 from catalogue!
     mongodb_user	Allow 27017 from user
 
 ⚡ Redis
