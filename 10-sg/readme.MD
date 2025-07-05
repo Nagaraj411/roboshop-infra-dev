@@ -26,8 +26,9 @@
 
       | 🔑 **Rule Name** | 🎯 **Purpose**                   |
       | ---------------------------------------------------- |
-      | `mysql_vpn`      | 🔓 Allow `22`, `3306` from `vpn` |
-      | `mysql_shipping` | 🔓 Allow `3306` from `shipping`  |
+      | `Redis_vpn`       | 🔓 Allow `22`, `6379` from `vpn` |
+      | `Redis_cart`      | 🔓 Allow `6379` from `cart`      |
+      | `Redis_user`      | 🔓 Allow `6379` from `user`      |
 
 ### 🗄️ MySQL
 
