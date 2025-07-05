@@ -75,11 +75,6 @@
       - 🔄 Rules are **modular** and can be reused across environments.
 
 
-
-
-
-
-
 This is 10-sg is the child folder
 main parent is terraform-aws-security group
 
