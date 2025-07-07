@@ -66,40 +66,40 @@ module "mongodb" {                              # This module is used to create 
 }
 
 # # redis security group
-# module "redis" {                                # This module is used to create a security group for the Redis
-#   source = "../../terraform-aws-security group" # Use the child path to the module
-#   #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
-#   project     = var.project
-#   environment = var.environment
+module "redis" {                                # This module is used to create a security group for the Redis
+  source = "../../terraform-aws-security group" # Use the child path to the module
+  #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
+  project     = var.project
+  environment = var.environment
 
-#   sg_name        = "redis"
-#   sg_description = "redis security group"
-#   vpc_id         = local.vpc_id
-# }
+  sg_name        = "redis"
+  sg_description = "redis security group"
+  vpc_id         = local.vpc_id
+}
 
 # # mysql security group
-# module "mysql" {                                # This module is used to create a security group for the MySQL
-#   source = "../../terraform-aws-security group" # Use the child path to the module
-#   #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
-#   project     = var.project
-#   environment = var.environment
+module "mysql" {                                # This module is used to create a security group for the MySQL
+  source = "../../terraform-aws-security group" # Use the child path to the module
+  #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
+  project     = var.project
+  environment = var.environment
 
-#   sg_name        = "mysql"
-#   sg_description = "mysql security group"
-#   vpc_id         = local.vpc_id
-# }
+  sg_name        = "mysql"
+  sg_description = "mysql security group"
+  vpc_id         = local.vpc_id
+}
 
 # # rabbitmq security group
-# module "rabbitmq" {                             # This module is used to create a security group for the RabbitMQ
-#   source = "../../terraform-aws-security group" # Use the child path to the module
-#   #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
-#   project     = var.project
-#   environment = var.environment
+module "rabbitmq" {                             # This module is used to create a security group for the RabbitMQ
+  source = "../../terraform-aws-security group" # Use the child path to the module
+  #source = "git::https://github.com/Nagaraj411/terraform-aws-security-group.git?ref=main"
+  project     = var.project
+  environment = var.environment
 
-#   sg_name        = "rabbitmq"
-#   sg_description = "rabbitmq security group"
-#   vpc_id         = local.vpc_id
-# }
+  sg_name        = "rabbitmq"
+  sg_description = "rabbitmq security group"
+  vpc_id         = local.vpc_id
+}
 
 # catalogue security group
 module "catalogue" {                            # This module is used to create a security group for the catalogue
@@ -200,12 +200,22 @@ resource "aws_security_group_rule" "vpc_ingress" {
 # Mongodb
 # 22, 27017 ports for mongodb
 resource "aws_security_group_rule" "mongodb_vpn_ssh" {
-  count                    = length(var.mongodb_ports_vpn)
+  count                    = length(var.mongodb_ports)
   type                     = "ingress"
-  from_port                = var.mongodb_ports_vpn[count.index] # This allows SSH and MongoDB connections 22, 27017
-  to_port                  = var.mongodb_ports_vpn[count.index] # This allows SSH and MongoDB connections 22, 27017
+  from_port                = var.mongodb_ports[count.index] # This allows SSH and MongoDB connections 22, 27017
+  to_port                  = var.mongodb_ports[count.index] # This allows SSH and MongoDB connections 22, 27017
   protocol                 = "tcp"
   source_security_group_id = module.vpn.sg_id # This allows the backend ALB to accept connections from the VPN security group
+  security_group_id        = module.mongodb.sg_id
+}
+
+resource "aws_security_group_rule" "mongodb_bastion" {
+  count                    = length(var.mongodb_ports)
+  type                     = "ingress"
+  from_port                = var.mongodb_ports[count.index] # This allows SSH and MongoDB connections 22, 27017
+  to_port                  = var.mongodb_ports[count.index] # This allows SSH and MongoDB connections 22, 27017
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # This allows the backend ALB to accept connections from the bastion security group
   security_group_id        = module.mongodb.sg_id
 }
 
@@ -230,12 +240,22 @@ resource "aws_security_group_rule" "mongodb_user" {
 # Redis
 # # redis ports 6379
 resource "aws_security_group_rule" "redis_vpn_ssh" {
-  count                    = length(var.redis_ports_vpn)
+  count                    = length(var.redis_ports)
   type                     = "ingress"
-  from_port                = var.redis_ports_vpn[count.index] # This allows SSH and Redis connections 22, 6379
-  to_port                  = var.redis_ports_vpn[count.index] # This allows SSH and Redis connections 22, 6379
+  from_port                = var.redis_ports[count.index] # This allows SSH and Redis connections 22, 6379
+  to_port                  = var.redis_ports[count.index] # This allows SSH and Redis connections 22, 6379
   protocol                 = "tcp"
   source_security_group_id = module.vpn.sg_id # This allows the backend ALB to accept connections from the VPN security group
+  security_group_id        = module.redis.sg_id
+}
+
+resource "aws_security_group_rule" "redis_bastion" {
+  count                    = length(var.redis_ports)
+  type                     = "ingress"
+  from_port                = var.redis_ports[count.index] # This allows SSH and Redis connections 22, 6379
+  to_port                  = var.redis_ports[count.index] # This allows SSH and Redis connections 22, 6379
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # This allows the backend ALB to accept connections from the VPN security group
   security_group_id        = module.redis.sg_id
 }
 
@@ -260,14 +280,25 @@ resource "aws_security_group_rule" "redis_cart" {
 #MySQL
 # MySQL ports 3306
 resource "aws_security_group_rule" "mysql_vpn_ssh" {
-  count                    = length(var.mysql_ports_vpn)
+  count                    = length(var.mysql_ports)
   type                     = "ingress"
-  from_port                = var.mysql_ports_vpn[count.index] # This allows SSH and MySQL connections 22, 3306
-  to_port                  = var.mysql_ports_vpn[count.index] # This allows SSH and MySQL connections 22, 3306
+  from_port                = var.mysql_ports[count.index] # This allows SSH and MySQL connections 22, 3306
+  to_port                  = var.mysql_ports[count.index] # This allows SSH and MySQL connections 22, 3306
   protocol                 = "tcp"
-  source_security_group_id = module.vpn.sg_id # This allows the backend ALB to accept connections from the VPN security group
+  source_security_group_id = module.vpn.sg_id # This allows the backend ALB to accept connections from the bastion security group
   security_group_id        = module.mysql.sg_id
 }
+
+resource "aws_security_group_rule" "mysql_bastion" {
+  count                    = length(var.mysql_ports)
+  type                     = "ingress"
+  from_port                = var.mysql_ports[count.index] # This allows SSH and MySQL connections 22, 3306
+  to_port                  = var.mysql_ports[count.index] # This allows SSH and MySQL connections 22, 3306
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # This allows the backend ALB to accept connections from the bastion security group
+  security_group_id        = module.mysql.sg_id
+}
+
 
 resource "aws_security_group_rule" "mysql_shipping" {
   type                     = "ingress"
@@ -280,11 +311,21 @@ resource "aws_security_group_rule" "mysql_shipping" {
 
 # RabbitMQ
 # # rabbitmq ports 5672
-resource "aws_security_group_rule" "rabbitmq_vpn_ssh" {
-  count                    = length(var.rabbitmq_ports_vpn)
+resource "aws_security_group_rule" "rabbitmq_bastion" {
+  count                    = length(var.rabbitmq_ports)
   type                     = "ingress"
-  from_port                = var.rabbitmq_ports_vpn[count.index] # This allows SSH and RabbitMQ connections 22, 5672
-  to_port                  = var.rabbitmq_ports_vpn[count.index] # This allows SSH and RabbitMQ connections 22, 5672
+  from_port                = var.rabbitmq_ports[count.index] # This allows SSH and RabbitMQ connections 22, 5672
+  to_port                  = var.rabbitmq_ports[count.index] # This allows SSH and RabbitMQ connections 22, 5672
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # This allows the backend ALB to accept connections from the bastion security group
+  security_group_id        = module.rabbitmq.sg_id
+}
+
+resource "aws_security_group_rule" "rabbitmq_vpn_ssh" {
+  count                    = length(var.rabbitmq_ports)
+  type                     = "ingress"
+  from_port                = var.rabbitmq_ports[count.index] # This allows SSH and RabbitMQ connections 22, 5672
+  to_port                  = var.rabbitmq_ports[count.index] # This allows SSH and RabbitMQ connections 22, 5672
   protocol                 = "tcp"
   source_security_group_id = module.vpn.sg_id # This allows the backend ALB to accept connections from the VPN security group
   security_group_id        = module.rabbitmq.sg_id
