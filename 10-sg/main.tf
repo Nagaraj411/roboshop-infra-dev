@@ -167,7 +167,7 @@ module "payment" {                              # This module is used to create 
 #=================================================================================================================================================================
 
 # Store the security group ID in SSM Parameter Store for bastion instances security group
-resource "aws_security_group_rule" "bastion_ingress" {
+resource "aws_security_group_rule" "bastion_laptop" {
   type              = "ingress"
   from_port         = 22 # ssh port ec2 instance
   to_port           = 22
@@ -573,78 +573,4 @@ resource "aws_security_group_rule" "frontend_vpn" {
   protocol                 = "tcp"
   source_security_group_id = module.vpn.sg_id
   security_group_id        = module.frontend.sg_id
-}
-
-resource "aws_security_group_rule" "frontend_alb" {
-  type                     = "ingress"
-  from_port                = 80
-  to_port                  = 80
-  protocol                 = "tcp"
-  source_security_group_id = module.frontend_alb.sg_id
-  security_group_id        = module.frontend.sg_id
-}
-
-#Frontend ALB
-resource "aws_security_group_rule" "frontend_alb_http" {
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = module.frontend_alb.sg_id
-}
-
-resource "aws_security_group_rule" "frontend_alb_https" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = module.frontend_alb.sg_id
-}
-
-#VPN ports 22, 443, 1194, 943
-resource "aws_security_group_rule" "vpn_ssh" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = module.vpn.sg_id
-}
-
-resource "aws_security_group_rule" "vpn_https" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = module.vpn.sg_id
-}
-
-resource "aws_security_group_rule" "vpn_1194" {
-  type              = "ingress"
-  from_port         = 1194
-  to_port           = 1194
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = module.vpn.sg_id
-}
-
-resource "aws_security_group_rule" "vpn_943" {
-  type              = "ingress"
-  from_port         = 943
-  to_port           = 943
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = module.vpn.sg_id
-}
-
-resource "aws_security_group_rule" "backend_alb_bastion" {
-  type                     = "ingress"
-  from_port                = 80
-  to_port                  = 80
-  protocol                 = "tcp"
-  source_security_group_id = module.bastion.sg_id
-  security_group_id        = module.backend_alb.sg_id
 }
