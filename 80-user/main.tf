@@ -1,8 +1,5 @@
 module "user" {
-    source = "../../terraform-aws-roboshop-module"
+    source = "git::https://github.com/Nagaraj411/terraform-aws-roboshop-module.git?ref=main"
     component = "user"
-    rule_priority = 20
-    
-
-  
+    rule_priority = 20 
 }
