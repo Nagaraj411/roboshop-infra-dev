@@ -1,56 +1,23 @@
-# 🔐 Roboshop Security Groups & Ingress Rules
-
-### 📦 Security Group Classification
-
-      | 🔖 **Category**      | 🧩 **Components**                                  |
-      | ------------------------------------------------------------------------- |
-      | 🗄️ **DB**            | `mongodb`, `redis`, `mysql`, `rabbitmq`            |
-      | ⚙️ **APP**           | `catalogue`, `user`, `cart`, `shipping`, `payment` |
-      | 🎯 **BACKEND\_ALB**  | —                                                  |
-      | 🌐 **FRONTEND**      | —                                                  |
-      | 🎯 **FRONTEND\_ALB** | —                                                  |
-      | 🔐 **VPN**           | —                                                  |
-      | 🛠️ **BASTION**       | —                                                  |
-
-# 🛡️ Ingress Rules per Component
-
-### 📚 MongoDB
-
-      | 🔑 **Rule Name**    | 🎯 **Purpose**                    |
-      | -------------------------------------------------------- |
-      | `mongodb_vpn`       | 🔓 Allow `22`, `27017` from `vpn` |
-      | `mongodb_catalogue` | 🔓 Allow `27017` from `catalogue` |
-      | `mongodb_user`      | 🔓 Allow `27017` from `user`      |
-
-### ⚡ Redis
-
-      | 🔑 **Rule Name** | 🎯 **Purpose**                   |
-      | ---------------------------------------------------- |
-      | `Redis_vpn`       | 🔓 Allow `22`, `6379` from `vpn` |
-      | `Redis_cart`      | 🔓 Allow `6379` from `cart`      |
-      | `Redis_user`      | 🔓 Allow `6379` from `user`      |
-
-### 🗄️ MySQL
-
-      | 🔑 **Rule Name** | 🎯 **Purpose**                   |
-      | ---------------------------------------------------- |
-      | `mysql_vpn`      | 🔓 Allow `22`, `3306` from `vpn` |
-      | `mysql_shipping` | 🔓 Allow `3306` from `shipping`  |
-
-### 📨 RabbitMQ
-
-      | 🔑 **Rule Name**   | 🎯 **Purpose**                   |
-      | ------------------------------------------------------ |
-      | `rabbitmq_vpn`     | 🔓 Allow `22`, `5672` from `vpn` |
-      | `rabbitmq_payment` | 🔓 Allow `5672` from `payment`   |
-
-### 🧩 Catalogue
-
-      | 🔑 **Rule Name**        | 🎯 **Purpose**                     |
-      | ------------------------------------------------------------- |
-      | `catalogue_vpn`         | 🔓 Allow `22` from `vpn`           |
-      | `catalogue_backend_alb` | 🔓 Allow `8080` from `backend_alb` |
-
+# 🔐 Security Group Rules Matrix
+* 🧱 Component	🔢 Ports	      📥 Source (Allowed From)
+      🔑 Bastion	22 (SSH)	0.0.0.0/0 (Public)
+      🔑 VPN	22, 443, 943, 1194	0.0.0.0/0 (Public)
+      🗄 MongoDB	22, 27017	VPN, Bastion, Catalogue, User
+      🧠 Redis	22, 6379	VPN, Bastion, User, Cart
+      🛢 MySQL	22, 3306	VPN, Bastion, Shipping
+      📦 RabbitMQ	22, 5672	VPN, Bastion, Payment
+      📦 Catalogue	8080	Backend ALB
+      22	VPN, Bastion
+      👥 User	8080	Backend ALB
+      22	VPN, Bastion
+      🛒 Cart	8080	Backend ALB
+      22	VPN, Bastion
+      🚚 Shipping	8080	Backend ALB
+      22	VPN, Bastion
+      💳 Payment	8080	Backend ALB
+      22	VPN, Bastion
+      🌐 Backend ALB	80	VPN, Bastion, Frontend, Cart, Shipping, Payment
+      🌐 Frontend ALB	80, 443	0.0.0.0/0 (Public)
 
 ## ✅ Notes
 
