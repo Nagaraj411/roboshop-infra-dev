@@ -1,23 +1,21 @@
 # 🔐 Security Group Rules Matrix
-* 🧱 Component	🔢 Ports	      📥 Source (Allowed From)
-      🔑 Bastion	22 (SSH)	0.0.0.0/0 (Public)
-      🔑 VPN	22, 443, 943, 1194	0.0.0.0/0 (Public)
-      🗄 MongoDB	22, 27017	VPN, Bastion, Catalogue, User
-      🧠 Redis	22, 6379	VPN, Bastion, User, Cart
-      🛢 MySQL	22, 3306	VPN, Bastion, Shipping
-      📦 RabbitMQ	22, 5672	VPN, Bastion, Payment
-      📦 Catalogue	8080	Backend ALB
-      22	VPN, Bastion
-      👥 User	8080	Backend ALB
-      22	VPN, Bastion
-      🛒 Cart	8080	Backend ALB
-      22	VPN, Bastion
-      🚚 Shipping	8080	Backend ALB
-      22	VPN, Bastion
-      💳 Payment	8080	Backend ALB
-      22	VPN, Bastion
-      🌐 Backend ALB	80	VPN, Bastion, Frontend, Cart, Shipping, Payment
-      🌐 Frontend ALB	80, 443	0.0.0.0/0 (Public)
+
+      | 🧱 **Component**     | 🔢 **Port(s)**     | 🔄 **Protocol** | 🔓 **Access From**                                        | 📝 **Purpose**                     |
+      | -------------------- | ------------------ | --------------- | --------------------------------------------------------- | ---------------------------------- |
+      | 🔑 **Bastion**       | 22                 | TCP             | 🌐 `0.0.0.0/0`                                            | SSH to EC2                         |
+      | 🔐 **VPN**           | 22, 443, 943, 1194 | TCP             | 🌐 `0.0.0.0/0`                                            | VPN connectivity                   |
+      | 🗄️ **MongoDB**      | 22, 27017          | TCP             | 🔐 VPN, 🔑 Bastion, 📦 Catalogue, 👥 User                 | DB access (SSH + MongoDB)          |
+      | 🧠 **Redis**         | 22, 6379           | TCP             | 🔐 VPN, 🔑 Bastion, 👥 User, 🛒 Cart                      | Cache access (SSH + Redis)         |
+      | 🛢️ **MySQL**        | 22, 3306           | TCP             | 🔐 VPN, 🔑 Bastion, 🚚 Shipping                           | DB access (SSH + MySQL)            |
+      | 🐇 **RabbitMQ**      | 22, 5672           | TCP             | 🔐 VPN, 🔑 Bastion, 💳 Payment                            | MQ access (SSH + AMQP)             |
+      | 📦 **Catalogue**     | 8080, 22           | TCP             | 🔐 VPN, 🔑 Bastion, 🌐 Backend ALB                        | API + SSH access                   |
+      | 👥 **User**          | 8080, 22           | TCP             | 🔐 VPN, 🔑 Bastion, 🌐 Backend ALB                        | API + SSH access                   |
+      | 🛒 **Cart**          | 8080, 22           | TCP             | 🔐 VPN, 🔑 Bastion, 🌐 Backend ALB                        | API + SSH access                   |
+      | 🚚 **Shipping**      | 8080, 22           | TCP             | 🔐 VPN, 🔑 Bastion, 🌐 Backend ALB                        | API + SSH access                   |
+      | 💳 **Payment**       | 8080, 22           | TCP             | 🔐 VPN, 🔑 Bastion, 🌐 Backend ALB                        | API + SSH access                   |
+      | 🌐 **Backend ALB**   | 80                 | TCP             | 🔐 VPN, 🔑 Bastion, 🔼 Frontend, 🛒 Cart, 🚚 Ship, 💳 Pay | Load Balancer for Backend Services |
+      | 🌍 **Frontend ALB**  | 80, 443            | TCP             | 🌐 `0.0.0.0/0`                                            | Public Load Balancer               |
+      | 🖥️ **Frontend App** | 22, 80             | TCP             | 🔐 VPN, 🔑 Bastion, 🌐 Frontend ALB                       | App access + ALB connection        |
 
 ## ✅ Notes
 
