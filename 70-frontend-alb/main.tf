@@ -42,7 +42,7 @@ resource "aws_lb_listener" "frontend_alb" { #_listener_arn
 # if cart service traffic got to frontend ALB it goes to cart service
 resource "aws_route53_record" "frontend_alb" {
   zone_id = var.zone_id
-  name    = "*.${var.zone_name}" # .devops84.shop
+  name    = "${var.environment}.${var.zone_name}" # dev.devops84.shop If * is use its efforts on serial key
   type    = "A"
 
   alias {
