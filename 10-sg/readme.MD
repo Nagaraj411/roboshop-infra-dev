@@ -2,8 +2,8 @@
 
       | 🧱 **Component**     | 🔢 **Port(s)**     | 🔄 **Protocol** | 🔓 **Access From**                                        | 📝 **Purpose**                     |
       | --------------------  | ------------------  | --------------- | --------------------------------------------------------- | ---------------------------------- |
-      | 🔑 **Bastion**       | 22                 | TCP             | 🌐 `0.0.0.0/0`                                            | SSH to EC2                         |
-      | 🔐 **VPN**           | 22, 443, 943, 1194 | TCP             | 🌐 `0.0.0.0/0`                                            | VPN connectivity                   |
+      | 🔑 **Bastion**       | 22                 | TCP             | 🌐 `0.0.0.0/0`                                             | SSH to EC2                         |
+      | 🔐 **VPN**           | 22, 443, 943, 1194 | TCP             | 🌐 `0.0.0.0/0`                                             | VPN connectivity                   |
       | 🗄️ **MongoDB**       | 22, 27017          | TCP             | 🔐 VPN, 🔑 Bastion, 📦 Catalogue, 👥 User                 | DB access (SSH + MongoDB)          |
       | 🧠 **Redis**         | 22, 6379           | TCP             | 🔐 VPN, 🔑 Bastion, 👥 User, 🛒 Cart                      | Cache access (SSH + Redis)         |
       | 🛢️ **MySQL**         | 22, 3306           | TCP             | 🔐 VPN, 🔑 Bastion, 🚚 Shipping                           | DB access (SSH + MySQL)            |
