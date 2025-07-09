@@ -81,7 +81,7 @@ resource "aws_instance" "mysql" {
   instance_type          = "t3.micro"
   vpc_security_group_ids = [local.mysql_sg_id]
   subnet_id              = local.database_subnet_ids
-  iam_instance_profile   = "terraformAdmin" # This will create and attach the IAM role to the instance for fetching secrets from AWS Secrets Manager
+  iam_instance_profile   = "MysqlEC2" # This will create and attach the IAM role to the instance for fetching secrets from AWS Secrets Manager
 
   tags = merge(
     local.common_tags,
