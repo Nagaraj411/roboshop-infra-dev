@@ -1,6 +1,6 @@
 # this line will create certificate to (devops84)
 resource "aws_acm_certificate" "devops84" {
-  domain_name       = "*.${var.zone_name}"
+  domain_name       = "dev.${var.zone_name}"
   validation_method = "DNS"
 
   tags = merge(
