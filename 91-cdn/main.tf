@@ -60,6 +60,7 @@ resource "aws_route53_record" "frontend_alb" {
   zone_id = var.zone_id
   name    = "cdn.${var.zone_name}" #cdn.devops84.shop
   type    = "A"                    # 🔁 Alias record type (IPv4)
+  allow_overwrite = true  # ✅ Allows overwriting existing records
 
   alias {
     name                   = aws_cloudfront_distribution.roboshop.domain_name    # 📡 Points to CloudFront
