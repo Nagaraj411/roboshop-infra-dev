@@ -10,4 +10,4 @@
     🎨 70-Frontend-ALB    →  🌍 ALB for frontend (public-facing site)
     👥 80-User            →  🧑‍🤝‍🧑 Deploys the **User microservice**, part of backend services.
     ⚙️ 90-Components      →  🧑‍🤝‍🧑 🔧 Deploys remaining services: **Cart**, **Shipping**, **Payment**, etc.
-    🚀 `91-CDN`           →  🌐 Sets up **CloudFront CDN** for caching & delivering frontend globally.
+    🚀 91-CDN             →  🌐 Sets up **CloudFront CDN** for caching & delivering frontend globally.
